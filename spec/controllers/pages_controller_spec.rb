@@ -25,4 +25,27 @@ RSpec.describe PagesController, type: :request do
       expect(json).to have_json_size(1).at_path('data')
     end
   end
+
+  describe 'POST #create' do
+    before do
+      expect_any_instance_of(Kernel).to receive_message_chain(:open, :read).and_return('page')
+      expect_any_instance_of(PageParser).to receive(:headers).and_return('header')
+    end
+
+    it 'creates a new Page with content' do
+      post_data = {
+        data: {
+          type: 'pages',
+          attributes: {
+            url: 'http://url-test.com'
+          }
+        }
+      }.to_json
+      post '/pages', params: post_data, headers: { 'Content-Type': 'application/vnd.api+json' }
+      expect(response).to have_http_status(201)
+      json = response.body
+      expect(json).to have_json_path('data')
+      expect(json).to have_json_size(4).at_path('data')
+    end
+  end
 end
