@@ -8,4 +8,8 @@ class PageParser
   def headers
     @page.css('h1', 'h2', 'h3').map(&:content).join(' ')
   end
+
+  def links
+    @page.css('a').map { |link| link['href'] }.join(' ')
+  end
 end
