@@ -6,6 +6,7 @@ RSpec.describe PagesController, type: :request do
   describe 'GET #index' do
     it 'has correct status and content type' do
       get '/pages'
+
       expect(response).to have_http_status(200)
       expect(response.content_type).to eq('application/vnd.api+json')
     end
@@ -13,14 +14,17 @@ RSpec.describe PagesController, type: :request do
     it 'has empty body array by default' do
       get '/pages'
       json = response.body
+
       expect(json).to have_json_path('data')
       expect(json).to have_json_size(0).at_path('data')
     end
 
-    it 'includes a schedule model when added' do
+    it 'includes a Page model when added' do
       Page.create(url: 'http://url-test.com', content: 'content')
+
       get '/pages'
       json = response.body
+
       expect(json).to have_json_path('data')
       expect(json).to have_json_size(1).at_path('data')
     end
@@ -41,9 +45,12 @@ RSpec.describe PagesController, type: :request do
           }
         }
       }.to_json
+
       post '/pages', params: post_data, headers: { 'Content-Type': 'application/vnd.api+json' }
       expect(response).to have_http_status(201)
+
       json = response.body
+
       expect(json).to have_json_path('data')
       expect(json).to have_json_size(4).at_path('data')
     end
