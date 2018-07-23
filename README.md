@@ -1,24 +1,58 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# Required
 
-Things you may want to cover:
+* [Docker Engine](https://docs.docker.com/installation/)
+* [Docker Compose](https://docs.docker.com/compose/install/)
 
-* Ruby version
+To run the application do:
 
-* System dependencies
+1-)
 
-* Configuration
+```
+  docker-compose build
+```
 
-* Database creation
+After you finish as useful images, you can run an application using the command below:
 
-* Database initialization
+2-)
 
-* How to run the test suite
+```
+  docker-compose up
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+3-) To create the database, in other terminal run the command:
 
-* Deployment instructions
+```
+  docker-compose run web rake db:setup
+```
 
-* ...
+The application can now be accessed by the host http://localhost:3000
+
+## API Requests
+
+run the Curl command:
+
+Creates Page model
+
+```
+curl -i -H "Accept: application/vnd.api+json" -H 'Content-Type:application/vnd.api+json' -X POST -d '{"data": {"type":"pages", "attributes":{"url":"https://www.globo.com/"}}}' http://localhost:3000/pages
+
+
+```
+
+List Pages
+
+```
+curl -i -H "Accept: application/vnd.api+json" -H 'Content-Type:application/vnd.api+json' -X GET http://localhost:3000/pages
+
+```
+
+
+## Tests
+
+run the command:
+
+```
+  docker-compose run web rspec
+```
